@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
@@ -32,7 +31,7 @@ st.write(f"### Linear Regression Model (R² Score: {r2:.4f})")
 # Scatter plot of Actual vs Predicted Prices
 st.write("### Actual vs Predicted Electricity Prices")
 fig, ax = plt.subplots()
-sns.scatterplot(x=y_test, y=y_pred, alpha=0.5, ax=ax)
+ax.scatter(y_test, y_pred, alpha=0.5)
 ax.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], '--', color='red')
 ax.set_xlabel("Actual Prices (€/MWh)")
 ax.set_ylabel("Predicted Prices (€/MWh)")
@@ -43,9 +42,13 @@ st.write("""Based on the provided visualization, a scatter plot, the analysis re
 \n The visualization demonstrates an inverse correlation between temperature speed and electricity prices:
 \n 1/ Higher wind speeds lead to lower and more stable electricity prices.
 \n 2/ Low wind speeds are linked to greater price volatility and higher costs.""")
-
 fig, ax = plt.subplots()
-sns.regplot(x=df['Temp'], y=df['Price'], scatter_kws={'alpha':0.3}, line_kws={"color": "red"}, ax=ax)
+ax.scatter(df['Temp'], df['Price'], alpha=0.3)
+coefficients = np.polyfit(df['Temp'], df['Price'], 1)
+poly = np.poly1d(coefficients)
+x_line = np.linspace(df['Temp'].min(), df['Temp'].max(), 100)
+y_line = poly(x_line)
+ax.plot(x_line, y_line, color='red')
 ax.set_xlabel("Temperature (°C)")
 ax.set_ylabel("Electricity Price (€/MWh)")
 st.pyplot(fig)
@@ -53,9 +56,14 @@ st.pyplot(fig)
 st.write("### Impact of Wind speed on Price")
 st.write("""Based on the provided visualization, a scatter plot, the analysis reveals a significant relationship between wind speed and electricity prices.
 \n Higher wind speeds are linked to lower and more stable electricity prices, likely reflecting the cost benefits of increased wind energy production. 
-\n Conversely, low wind speeds result in higher and more volatile prices, emphasizing the challenges of limited renewable energy availability during calm periods..""")
+\n Conversely, low wind speeds result in higher and more volatile prices, emphasizing the challenges of limited renewable energy availability during calm periods.""")
 fig, ax = plt.subplots()
-sns.regplot(x=df['Wind'], y=df['Price'], scatter_kws={'alpha':0.3}, line_kws={"color": "red"}, ax=ax)
+ax.scatter(df['Wind'], df['Price'], alpha=0.3)
+coefficients = np.polyfit(df['Wind'], df['Price'], 1)
+poly = np.poly1d(coefficients)
+x_line = np.linspace(df['Wind'].min(), df['Wind'].max(), 100)
+y_line = poly(x_line)
+ax.plot(x_line, y_line, color='red')
 ax.set_xlabel("Wind Speed (m/s)")
 ax.set_ylabel("Electricity Price (€/MWh)")
 st.pyplot(fig)
