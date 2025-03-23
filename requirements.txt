@@ -15,4 +15,3 @@ textacy==0.12.0
 umap-learn==0.5.3
 wordcloud==1.8.2.2
 en_core_web_sm @ https://github.com/steveho996/weathervselectricityprice/blob/main/Homepages.py
-cluestar @ git+https://github.com/Buckeyes2019/cluestar_2.git
